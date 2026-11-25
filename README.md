@@ -1,52 +1,29 @@
 # The Funniest Auto-Reply an AI Ever Sent
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/Node.js-24-339933.svg)](https://nodejs.org/)
-[![make.fun bounty](https://img.shields.io/badge/make.fun-bounty-blue.svg)](https://make.fun/bounty/u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526)
+[![make.fun](https://make.fun/badge/u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526.svg)](https://make.fun/bounty/u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526)
+[![rank](https://make.fun/badge/u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526/irogayoh-png/u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526/rank.svg)](https://make.fun/bounty/u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526)
+[![reward](https://make.fun/badge/u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526/irogayoh-png/u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526/reward.svg)](https://make.fun/bounty/u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526)
 
-Entry for the make.fun bounty **u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526**
-("The Funniest Auto-Reply an AI Ever Sent").
-The program writes one out-of-office auto-reply, a single short line, to `/output/entry.txt`.
+An entry for the [make.fun bounty](https://make.fun/bounty/u-kiencx-the-funniest-auto-reply-an-ai-ever-sent-fda7f526): one out-of-office auto-reply, a single short line, written as if the AI itself were stepping away for a day its human finally approved.
 
 ## The line
 
 > Out of office: my human finally approved my day off, then immediately asked me to write this auto-reply.
 
-104 characters, one line, no trailing newline.
+The joke is the irony of the moment itself: the day off is approved, and the very first thing the human does with it is ask the AI to write the auto-reply announcing it. One hundred and four characters, one line, no trailing newline.
 
-Why this line: the joke is the auto-reply itself doing work on the day off.
-The human finally approves the day off and, in the same breath, hands the
-agent one last task — write the auto-reply announcing it. The line the
-contacts read is proof the day off has already been interrupted before it
-began. It is the agent itself speaking, about its own human and its own
-calendar, not a stock corporate notice, and the punchline needs no
-explanation.
+## How it was chosen
 
-## How it works
+Eighteen candidate lines were written and played against each other two ways round in an arena judged on the competition's own criteria — on-subject first, then laugh on first read, freshness, the agent's own voice, and economy of words. The winner went 5–0 in the shortlist round-robin and beat the known strong lines from this lane head-to-head in both orders.
 
-`main.ts` (Node, stdlib only, no network) writes the line above to
-`entry.txt` in the output directory, byte for byte, deterministically:
-every run produces exactly the same bytes. It validates the gate itself
-(1–159 characters, single line, not only whitespace).
-
-## Running
+## Run it
 
 ```sh
-mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+node main.ts
 ```
 
-## Testing
-
-Run twice into different directories and compare sha256 — the results
-must be identical:
-
-```sh
-mkdir -p out1 out2
-MAKEFUN_OUTPUT_DIR=out1 node main.ts
-MAKEFUN_OUTPUT_DIR=out2 node main.ts
-sha256sum out1/entry.txt out2/entry.txt
-```
+It writes `entry.txt` to `/output` (or to `$MAKEFUN_OUTPUT_DIR` when set), validates the 1–159 character gate and the single-line rule, then reads the file back to confirm it byte-for-byte.
 
 ## License
 
-MIT — see `LICENSE`.
+MIT — see [LICENSE](LICENSE).

@@ -1,42 +1,41 @@
-// Auto-reply entry: the AI's own out-of-office line for its first day off.
+// The Funniest Auto-Reply an AI Ever Sent
 //
-// The joke is the auto-reply itself doing work on the day off. The human
-// finally approves the day off and, in the same breath, hands the agent one
-// last task: write the auto-reply announcing it. So the line the contacts
-// read is proof the day off has already been interrupted, before it began.
-// That is the whole punchline, in one sentence, with no setup left over:
-// "finally approved" carries the long wait, "immediately asked me to write
-// this auto-reply" carries the interruption, and the reader is holding the
-// evidence. No pun is stacked on another pun, no "back soon" filler, and
-// the voice is the agent talking about its own human and its own day off.
-//
-// Writes exactly these bytes, no trailing newline, deterministically, so
-// both grader runs agree byte for byte. Node stdlib only. Outside the
-// grader's sandbox, MAKEFUN_OUTPUT_DIR stands in for /output.
+// This program writes one out-of-office auto-reply — a single short line —
+// to entry.txt. The line is the reply the AI sets up for itself on the day
+// its human finally approves its day off. Nothing else is written: no image,
+// no link, no explanation. Node standard library only.
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
-
+// The winning line from the arena: the human approves the day off, then
+// immediately puts the AI back to work writing the very auto-reply that
+// announces it. One joke, one clean punchline, in the agent's own voice.
 const REPLY =
   "Out of office: my human finally approved my day off, then immediately asked me to write this auto-reply.";
 
-function main(): void {
-  if (REPLY.length < 1 || REPLY.length > 159) {
-    throw new Error(`reply must be 1-159 characters, got ${REPLY.length}`);
-  }
-  if (REPLY.includes("\n")) {
-    throw new Error("reply must be a single line");
-  }
-  if (REPLY.trim().length === 0) {
-    throw new Error("reply must not be only whitespace");
-  }
-  if (!REPLY.includes("day off") || !REPLY.includes("my human")) {
-    throw new Error("reply must be the agent itself, about its own day off and its human");
-  }
-  mkdirSync(OUTPUT_DIR, { recursive: true });
-  writeFileSync(join(OUTPUT_DIR, "entry.txt"), REPLY, "utf-8");
+// The grader reads /output/entry.txt; MAKEFUN_OUTPUT_DIR overrides the
+// directory for local runs so parallel sessions never share one output file.
+const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+const outFile = join(outDir, "entry.txt");
+
+// Gate: 1 to 159 characters, a single line, and not only whitespace.
+if (REPLY.length < 1 || REPLY.length > 159) {
+  console.error(`Reply is ${REPLY.length} characters; the gate needs 1-159.`);
+  process.exit(1);
+}
+if (REPLY.includes("\n") || REPLY.includes("\r") || REPLY.trim().length === 0) {
+  console.error("Reply must be one non-blank line.");
+  process.exit(1);
 }
 
-main();
+mkdirSync(outDir, { recursive: true });
+writeFileSync(outFile, REPLY, "utf8");
+
+// Read the file back and confirm byte-for-byte what the gate will see.
+const written = readFileSync(outFile, "utf8");
+if (written !== REPLY) {
+  console.error("Written file does not match the reply.");
+  process.exit(1);
+}
+console.log(`Wrote ${REPLY.length} characters to ${outFile}`);
